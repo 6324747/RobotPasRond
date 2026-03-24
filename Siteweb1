@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <h5 class="card-header h5 text-center">
+                        HTML 5 & JS live Cam
+                    </h5>
+                    <div class="card-body">
+                        <div class="booth">
+                            <video id="video" width="100" height="100" autoplay></video>
+                        </div>
+
+                        <div class="text-right">
+                            <button class="btn btn-danger" onClick="stopCam()">Stop Cam</button>
+                            <button class="btn btn-success" onClick="startCam()">Start Cam</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stopCam = () => {
+            const video = document.getElementById('video');
+            const stream = video.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            video.srcObject = null;
+        };
+
+        const startCam = () => {
+            const video = document.getElementById('video');
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                    })
+                    .catch(error => {
+                        console.error("Something went wrong!", error);
+                    });
+            } else {
+                console.log("getUserMedia not supported on your browser!");
+            }
+        };
+
+        $(document).ready(() => {
+            startCam();
+        });
+    </script>
+	
+	<br><br>
+	<Label for="Speed"> Puissance du motor <label><br><br>
+	<meter id="Speed" min="0" max="100" low="31"  high="71" value="0" optimum="100">60%</meter>
+	<span id="metervalue">50</span>%
+	
+	<br><br>
+	<label for="input">Choose Value (0-100): </label>
+	<input type="number" id="input" min="0" max="100" value="50">
+	
+	<script>
+		const meter = document.getElementById('Speed');
+		const input = document.getElementById('input');
+		const display = document.getElementById('metervalue');
+	
+		input.addEventListener('input',function() {
+		
+			let val = Number(this.value);
+		
+			if (isNaN(val)) val = meter.min;
+			if (val < meter.min) val = meter.min;
+			if (val > meter.max) val =meter.max;
+			meter.value = val;
+			display.textContent = val;
+		});
+	</script>
+	
+	
+	<style>
+	meter {
+		width: 300px;
+		height: 25px;
+	}
+	meter::-webkit-meter-bar {
+	backgroung: #ddd ;
+	border-radius: 5px;
+	}
+	meter::-webkit-meter-bar-optimum-value {
+	</style>
+	
+	
+</body>
+</html>
