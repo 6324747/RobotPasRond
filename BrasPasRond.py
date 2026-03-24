@@ -5,9 +5,9 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 # Choisir les GPIO pour les signaux
-SERVO_PIN1 = 14
+SERVO_PIN1 = 13
 SERVO_PIN2 = 15
-SERVO_PIN3 = 18
+SERVO_PIN3 = 17
 GPIO.setup(SERVO_PIN1, GPIO.OUT)
 GPIO.setup(SERVO_PIN2, GPIO.OUT)
 GPIO.setup(SERVO_PIN3, GPIO.OUT)
@@ -22,24 +22,24 @@ pwm3.start(0)
 
 def set_angle(angle, pwm):
     # Conversion angle → DutyCycle
-    duty = 2 + (angle / 18)  # approx pour SG90 (0°=2%, 90°=7%, 180°=12%)
+    duty = 2.5 + (angle / 18)  # approx pour MG90S (0°=2%, 90°=7%, 180°=12%)
     pwm.ChangeDutyCycle(duty)
-    time.sleep(0.7)  # temps pour que le servo bouge
+    time.sleep(0.5)  # temps pour que le servo bouge
     pwm.ChangeDutyCycle(0)  # éviter vibrations
 
 try:
     while True:
-        set_angle(60, pwm1)
-        set_angle(30, pwm2)
-        set_angle(90, pwm3)
-        time.sleep(0.1) # 100ms juste pour dire qu'on ne recommence pas tout de suite
-        set_angle(90, pwm1)
-        set_angle(60, pwm2)
-        set_angle(110, pwm3)
-        time.sleep(0.1)
-        set_angle(150, pwm1)
-        set_angle(120, pwm2)
-        set_angle(130, pwm3)
+        set_angle(0, pwm1)
+    #    set_angle(30, pwm2)
+     #   set_angle(90, pwm3)
+        time.sleep(1) # 100ms juste pour dire qu'on ne recommence pas tout de suite
+        set_angle(180, pwm1)
+      #  set_angle(60, pwm2)
+       # set_angle(110, pwm3)
+        time.sleep(1)
+        set_angle(-90, pwm1)
+        #set_angle(120, pwm2)
+        #set_angle(130, pwm3)
         time.sleep(0.1)
 
 except KeyboardInterrupt:
