@@ -28,16 +28,22 @@ def set_angle(angle, pwm):
     pwm.ChangeDutyCycle(0)  # éviter vibrations
 
 try:
+    #Épaule --> [80, 170] degrés
+    #Avant-Bras --> [50, 130] degrés
+    #Base --> [5, 170] degrés
+    
+    #format "set_angle(X, pwmX)" et "time.sleep(0,1)
+   
     while True:
-        set_angle(0, pwm1)
+        set_angle(5, pwm1)
     #    set_angle(30, pwm2)
      #   set_angle(90, pwm3)
         time.sleep(1) # 100ms juste pour dire qu'on ne recommence pas tout de suite
-        set_angle(180, pwm1)
+        set_angle(170, pwm1)
       #  set_angle(60, pwm2)
        # set_angle(110, pwm3)
         time.sleep(1)
-        set_angle(-90, pwm1)
+        set_angle(230, pwm1)
         #set_angle(120, pwm2)
         #set_angle(130, pwm3)
         time.sleep(0.1)
