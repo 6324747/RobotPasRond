@@ -103,27 +103,27 @@ def move_right():  # d
     GPIO.output(PIN_22, True)
     GPIO.output(PIN_23, True)
     
-def move_up
+def move_up():
     AB = AB + 1
     set_angle(AB, pwmAB)
 
-def move_down
+def move_down():
     AB = AB - 1
     set_angle(AB, pwmAB)
 
-def move_shallow
+def move_shallow():
     E = E - 1
     set_angle(E, pwmE)
 
-def move_deep
+def move_deep():
     E = E + 1
     set_angle(E, pwmE)
 
-def move_l
+def move_l():
     B = B + 1
     set_angle(B, pwmB)
 
-def move_r
+def move_r():
     B = B - 1
     set_angle(B, pwmB)
 
