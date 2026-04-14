@@ -284,12 +284,12 @@ finally:
     cap.release()
     GPIO.cleanup()
 
-    #if nextion is not None:
-     #   try:
-      #      nextion_send("p0.pic=1")
-       #     nextion.close()
-        #except:
-         #   pass
+    if nextion is not None:
+        try:
+            nextion_send("p0.pic=1")
+            nextion.close()
+        except:
+            pass
 
     pygame.quit()
     print("Fermé proprement.")
