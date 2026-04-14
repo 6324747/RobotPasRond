@@ -57,6 +57,10 @@ pwmE.start(0)
 pwmB = GPIO.PWM(SERVO_B, 50)
 pwmB.start(0)
 
+B = 88
+AB = 90
+E = 125
+
 #pins moteurs
 GPIO.setup(PIN_27, GPIO.OUT)
 GPIO.setup(PIN_17, GPIO.OUT)
@@ -82,49 +86,55 @@ def move_stop():
 def move_forward():  # w
     GPIO.output(PIN_27, True)
     GPIO.output(PIN_17, True)
-    GPIO.output(PIN_22, True)
-    GPIO.output(PIN_23, True)
+    GPIO.output(PIN_22, False)
+    GPIO.output(PIN_23, False)
 
 def move_backward():  # s
     GPIO.output(PIN_27, True)
     GPIO.output(PIN_17, True)
-    GPIO.output(PIN_22, False)
-    GPIO.output(PIN_23, False)
+    GPIO.output(PIN_22, True)
+    GPIO.output(PIN_23, True)
 
 def move_left():  # a
     GPIO.output(PIN_27, True)
-    GPIO.output(PIN_17, False)
-    GPIO.output(PIN_22, True)
-    GPIO.output(PIN_23, True)
-
-def move_right():  # d
-    GPIO.output(PIN_27, False)
     GPIO.output(PIN_17, True)
     GPIO.output(PIN_22, True)
+    GPIO.output(PIN_23, False)
+
+def move_right():  # d
+    GPIO.output(PIN_27, True)
+    GPIO.output(PIN_17, True)
+    GPIO.output(PIN_22, False)
     GPIO.output(PIN_23, True)
     
 def move_up():
-    AB = AB + 1
+    global AB
+    AB = AB + 10
     set_angle(AB, pwmAB)
 
 def move_down():
-    AB = AB - 1
+    global AB
+    AB = AB - 10
     set_angle(AB, pwmAB)
 
 def move_shallow():
-    E = E - 1
+    global E
+    E = E - 10
     set_angle(E, pwmE)
 
 def move_deep():
-    E = E + 1
+    global E
+    E = E + 10
     set_angle(E, pwmE)
 
 def move_l():
-    B = B + 1
+    global B
+    B = B + 10
     set_angle(B, pwmB)
 
 def move_r():
-    B = B - 1
+    global B
+    B = B - 10
     set_angle(B, pwmB)
 
 all_off()
@@ -164,15 +174,23 @@ nextion_init()
 # [4] LOOP
 # =========================
 try:
+
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                
 
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_q]:
+            set_angle(80, pwmB)
+            set_angle(130, pwmAB)
+            set_angle(20, pwmE)
+            #Épaule --> [80, 170] degrés
+            #Avant-Bras --> [50, 130] degrés
+            #Base --> [5, 170] degrés
             running = False
 
         elif keys[pygame.K_x]:
@@ -194,6 +212,30 @@ try:
         elif keys[pygame.K_d]:
             move_right()
             current_state = "RIGHT"
+            
+        elif keys[pygame.K_i]:
+            move_up()
+            current_state = "UP ARM"
+
+        elif keys[pygame.K_k]:
+            move_down()
+            current_state = "DOWN ARM"
+
+        elif keys[pygame.K_u]:
+            move_shallow()
+            current_state = "SHALLOW ARM"
+
+        elif keys[pygame.K_o]:
+            move_deep()
+            current_state = "DEEP ARM"
+
+        elif keys[pygame.K_j]:
+            move_l()
+            current_state = "LEFT ARM"
+
+        elif keys[pygame.K_l]:
+            move_r()
+            current_state = "RIGHT ARM"
 
         else:
             move_stop()
@@ -242,12 +284,12 @@ finally:
     cap.release()
     GPIO.cleanup()
 
-    if nextion is not None:
-        try:
-            nextion_send("p0.pic=1")
-            nextion.close()
-        except:
-            pass
+    #if nextion is not None:
+     #   try:
+      #      nextion_send("p0.pic=1")
+       #     nextion.close()
+        #except:
+         #   pass
 
     pygame.quit()
     print("Fermé proprement.")
