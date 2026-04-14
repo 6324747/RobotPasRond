@@ -59,7 +59,7 @@ pwmB.start(0)
 
 B = 88
 AB = 90
-E = 125
+E = 90
 
 #pins moteurs
 GPIO.setup(PIN_27, GPIO.OUT)
